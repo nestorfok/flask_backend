@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <img src="{{url_for('static', filename='family.jpeg')}}" />
+    <ul>
+    {% for member in family_members %}
+    <li>{{ member }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
