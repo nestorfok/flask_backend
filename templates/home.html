@@ -6,9 +6,17 @@
 <body>
     <img src="{{url_for('static', filename='family.jpeg')}}" />
     <ul>
-    {% for member in family_members %}
+        {% for member in family_members %}
     <li>{{ member }}</li>
     {% endfor %}
     </ul>
+
+    <u>
+        {% for key, value in links.items() %}
+        <li><a href="{{value}}">{{key}}</a> </li>
+        {% endfor %}
+    </u>
+
+
 </body>
 </html>
