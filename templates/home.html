@@ -12,11 +12,27 @@
     </ul>
 
     <u>
-        {% for key, value in links.items() %}
-        <li><a href="{{value}}">{{key}}</a> </li>
+        {% for value in links %}
+        <li><a href="{{value[1]}}">{{value[0]}}</a> </li>
         {% endfor %}
     </u>
 
+    <form action="/" method="post">
+        <label for="name_add">Name:</label><br>
+        <input type="text" id="name_add" name="name_add"><br>
+
+        <label for="url">Url:</label><br>
+        <input type="text" id="url" name="url"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <form action="/" method="post">
+        <label for="name_delete">Name:</label><br>
+        <input type="text" id="name_delete" name="name_delete"><br><br>
+
+        <input type="submit" value="Remove">
+    </form>
 
 </body>
 </html>

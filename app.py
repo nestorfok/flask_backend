@@ -1,17 +1,60 @@
-from flask import Flask, render_template, url_for
-
+from flask import Flask, render_template, request
+from flaskext.mysql import MySQL
 app = Flask(__name__)
 
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Nes&and989367'
+app.config['MYSQL_DATABASE_DB'] = 'fokchihin'
+app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
+app.config['MYSQL_DATABASE_PORT'] = 3306
 
-@app.route('/')
+mysql = MySQL()
+mysql.init_app(app)
+connection = mysql.connect()
+
+
+@app.route('/', methods=['GET', 'POST'])
 def home():
+
+    if request.method == 'POST':
+        if request.form.get('name_delete'):
+            name = request.form.get('name_delete')
+            delete_link(name)
+        elif request.form.get('name_add'):
+            name = request.form.get('name_add')
+            url = request.form.get('url')
+            add_link(name, url)
+
     title = "Nestor's Website"
     family_members = ["Richard", "Fiona", "Andrew", "Nestor", "Mama"]
-    links = {
-        "Hong Kong": "https://www.google.com/travel/things-to-do?dest_mid=%2Fm%2F07dfk&dest_state_type=main&dest_src=yts&g2lb=2502548%2C4258168%2C4270442%2C4306835%2C4308227%2C4317915%2C4322823%2C4328159%2C4367953%2C4371335%2C4393965%2C4395848%2C4401769%2C4403882%2C4412670%2C4413451%2C4416581%2C4417925%2C4421968&hl=en&gl=GB#ttdm=35.612241_139.789860_10&ttdmf=%25252Fm%25252F07thkr",
-        "Tokyo": "https://www.google.com/maps/d/viewer?ie=UTF8&hl=en&msa=0&ll=22.296243999999998%2C114.173183&spn=0.052095%2C0.110378&z=14&iwloc=000488f2abc26e2aa5aa0&mid=1FA5MzT9LlPsr6YRXMEU9cYv9TzM"
-    }
+    links = retrieve_all_links()
+
     return render_template("home.html", title=title, family_members=family_members, links=links)
+
+
+def delete_link(name):
+    global connection
+    cursor = connection.cursor()
+    cursor.execute("delete from travel WHERE name = %s", name)
+    connection.commit()
+    cursor.close()
+
+
+def add_link(name, url):
+    global connection
+    cursor = connection.cursor()
+    cursor.execute("insert into travel(name, url) values(%s, %s)", (name, url))
+    connection.commit()
+    cursor.close()
+
+
+def retrieve_all_links():
+    global connection
+    cursor = connection.cursor()
+    cursor.execute("select name, url from travel")
+    links = cursor.fetchall()
+    cursor.close()
+    return links
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
