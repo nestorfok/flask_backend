@@ -4,11 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 ### Setup SQLAlchemy connection ###
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}/{databasename}".format(
     username="root",
     password="",
     hostname="127.0.0.1",
-    databasename="Destinations",
+    databasename="Destinations"
 )
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
@@ -58,6 +58,7 @@ def add_link(name, url):
 
 def retrieve_all_links():
     return Travel.query.all()
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
