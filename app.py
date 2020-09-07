@@ -14,7 +14,7 @@ if os.getenv("IS_PYTHONANYWHERE") == 'True':
         username="foknestor",
         password="Andy31527922",
         hostname="foknestor.mysql.pythonanywhere-services.com",
-        databasename="Destinations"
+        databasename="foknestor$Destinations"
     )
 else:
     ### Setup local computer connection ###
