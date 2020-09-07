@@ -12,8 +12,8 @@
     </ul>
 
     <u>
-        {% for value in links %}
-        <li><a href="{{value[1]}}">{{value[0]}}</a> </li>
+        {% for link in links %}
+        <li><a href="{{link.url}}">{{link.name}}</a> </li>
         {% endfor %}
     </u>
 
