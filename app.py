@@ -1,15 +1,30 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-### Setup SQLAlchemy connection ###
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}/{databasename}".format(
-    username="root",
-    password="",
-    hostname="127.0.0.1",
-    databasename="Destinations"
-)
+project_dir = os.path.dirname(os.path.realpath(__file__))
+
+load_dotenv(os.path.join(project_dir, '.env'))
+if os.getenv("IS_PYTHONANYWHERE") == 'True':
+    ### Setup PYTHONANYWHERE MYSQL connection ###
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}/{databasename}".format(
+        username="foknestor",
+        password="Andy31527922",
+        hostname="foknestor.mysql.pythonanywhere-services.com",
+        databasename="Destinations"
+    )
+else:
+    ### Setup local computer connection ###
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{password}@{hostname}/{databasename}".format(
+        username="root",
+        password="",
+        hostname="127.0.0.1",
+        databasename="Destinations"
+    )
+
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
